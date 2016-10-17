@@ -8,7 +8,7 @@
 
 from collections import defaultdict
 import networkx as nx
-import link_clustering as lc
+import .link_clustering as lc
 
 def convert_to_lc_format(graph, is_weighted, weight_key):
 
