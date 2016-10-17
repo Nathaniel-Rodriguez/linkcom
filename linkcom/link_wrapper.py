@@ -8,7 +8,7 @@
 
 from collections import defaultdict
 import networkx as nx
-import .link_clustering as lc
+from .link_clustering import *
 
 def convert_to_lc_format(graph, is_weighted, weight_key):
 
@@ -22,7 +22,7 @@ def convert_to_lc_format(graph, is_weighted, weight_key):
             wij = 1
             
         if ni != nj: # skip any self-loops...
-            ni,nj = lc.swap(ni,nj)
+            ni,nj = swap(ni,nj)
             edges.add( (ni,nj) )
             ij2wij[ni,nj] = wij
             adj[ni].add(nj)
@@ -61,24 +61,24 @@ def cluster(nx_graph, threshold=None, is_weighted=False, weight_key='weight',
     
     if threshold is not None:
         if is_weighted:
-            edge2cid,D_thr = lc.HLC( adj,edges ).single_linkage( threshold, w=ij2wij )
+            edge2cid,D_thr = HLC( adj,edges ).single_linkage( threshold, w=ij2wij )
         else:
-            edge2cid,D_thr = lc.HLC( adj,edges ).single_linkage( threshold )
+            edge2cid,D_thr = HLC( adj,edges ).single_linkage( threshold )
         print("# D_thr = " , D_thr)
         if to_file:
-            lc.write_edge2cid( edge2cid,"{:s}_thrS{:f}_thrD{:f}".format(basename,threshold,D_thr), delimiter=delimiter )
+            write_edge2cid( edge2cid,"{:s}_thrS{:f}_thrD{:f}".format(basename,threshold,D_thr), delimiter=delimiter )
 
     else:
         if is_weighted:
-            edge2cid,S_max,D_max,list_D = lc.HLC( adj,edges ).single_linkage( w=ij2wij )
+            edge2cid,S_max,D_max,list_D = HLC( adj,edges ).single_linkage( w=ij2wij )
         else:
             if dendro_flag:
-                edge2cid,S_max,D_max,list_D, orig_cid2edge, linkage = lc.HLC( adj,edges ).single_linkage( 
+                edge2cid,S_max,D_max,list_D, orig_cid2edge, linkage = HLC( adj,edges ).single_linkage( 
                                                                                 dendro_flag=dendro_flag )
                 if to_file:
-                    lc.write_dendro( "{:s}_dendro".format(basename), orig_cid2edge, linkage)
+                    write_dendro( "{:s}_dendro".format(basename), orig_cid2edge, linkage)
             else:
-                edge2cid,S_max,D_max,list_D = lc.HLC( adj,edges ).single_linkage()
+                edge2cid,S_max,D_max,list_D = HLC( adj,edges ).single_linkage()
 
         print("# D_max = {:f}\n# S_max = {:f}".format(D_max,S_max))
         if to_file:
@@ -86,7 +86,7 @@ def cluster(nx_graph, threshold=None, is_weighted=False, weight_key='weight',
             for s,D in list_D:
                 print(s, D, end="\n", file=f)
             f.close()
-            lc.write_edge2cid( edge2cid,"{:s}_maxS{:f}_maxD{:f}".format(basename,S_max,D_max), delimiter=delimiter )
+            write_edge2cid( edge2cid,"{:s}_maxS{:f}_maxD{:f}".format(basename,S_max,D_max), delimiter=delimiter )
 
     if threshold is not None:
         return edge2cid, D_thr
