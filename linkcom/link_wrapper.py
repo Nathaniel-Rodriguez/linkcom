@@ -45,10 +45,10 @@ def cluster(nx_graph, threshold=None, is_weighted=False, weight_key='weight',
 
     OUTPUT:
     if no threshold: returns a tuple with: (dict) dictionary with keys=edges and values=community membership, 
-                    (float) max similarity, (float) max partition density, (list) partition density list
+                    (float) best similarity, (float) best partition density, (list) partition density list
 
     if dendro_flag: returns a tuple with: (dict) dictionary with keys=edges and values=community membership, 
-                    (float) max similarity, (float) max partition density, (list) partition density list,
+                    (float) best similarity, (float) best partition density, (list) partition density list,
                     (dict) keys=edges and values=community membership for original, (list) dendrogram
 
     if threshold: returns a tuple with: (dict) dictionary with keys=edges and values=community membership, partition density at threshold
