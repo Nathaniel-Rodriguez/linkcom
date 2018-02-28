@@ -5,6 +5,8 @@
 # not print anything out to file unless specified
 # Modified: 2016-10-16
 # Nathaniel Rodriguez
+# Modified: 2018-2-27
+# Elise Jing
 
 from collections import defaultdict
 import networkx as nx
@@ -15,7 +17,7 @@ def convert_to_lc_format(graph, is_weighted, weight_key):
     adj = defaultdict(set)
     edges = set()
     ij2wij = {}
-    for ni, nj in graph.edges_iter():
+    for ni, nj in graph.edges():
         if is_weighted:
             wij = graph[ni][nj][weight_key]
         else:
